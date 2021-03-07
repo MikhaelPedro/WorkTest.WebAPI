@@ -6,17 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20210305025407_initial.cs" />
-    <Compile Remove="Migrations\20210305025407_initial.Designer.cs" />
-    <Compile Remove="Migrations\20210305031132_initial.cs" />
-    <Compile Remove="Migrations\20210305031132_initial.Designer.cs" />
-    <Compile Remove="Migrations\20210305040828_initial.cs" />
-    <Compile Remove="Migrations\20210305040828_initial.Designer.cs" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <ProjectReference Include="..\WorkTest.Dominio\WorkTest.Dominio.csproj" />
+    <ProjectReference Include="..\WorkTest.Repo\WorkTest.Repo.csproj" />
   </ItemGroup>
 
 </Project>

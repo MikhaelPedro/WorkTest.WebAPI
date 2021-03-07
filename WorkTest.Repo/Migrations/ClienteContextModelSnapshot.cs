@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WorkTest.WebAPI.Data;
+using WorkTest.Repo;
 
-namespace WorkTest.WebAPI.Migrations
+namespace WorkTest.Repo.Migrations
 {
     [DbContext(typeof(ClienteContext))]
     partial class ClienteContextModelSnapshot : ModelSnapshot
@@ -19,7 +19,7 @@ namespace WorkTest.WebAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WorkTest.WebAPI.Models.Cliente", b =>
+            modelBuilder.Entity("WorkTest.Dominio.Cliente", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace WorkTest.WebAPI.Migrations
                     b.ToTable("Clientes");
                 });
 
-            modelBuilder.Entity("WorkTest.WebAPI.Models.Endereco", b =>
+            modelBuilder.Entity("WorkTest.Dominio.Endereco", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,10 +63,10 @@ namespace WorkTest.WebAPI.Migrations
                     b.ToTable("Enderecos");
                 });
 
-            modelBuilder.Entity("WorkTest.WebAPI.Models.Endereco", b =>
+            modelBuilder.Entity("WorkTest.Dominio.Endereco", b =>
                 {
-                    b.HasOne("WorkTest.WebAPI.Models.Cliente", "Cliente")
-                        .WithMany("Endereco")
+                    b.HasOne("WorkTest.Dominio.Cliente", "Cliente")
+                        .WithMany("Enderecos")
                         .HasForeignKey("ClienteId");
                 });
 #pragma warning restore 612, 618

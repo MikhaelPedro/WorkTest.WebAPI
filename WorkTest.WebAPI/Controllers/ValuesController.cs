@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WorkTest.Dominio;
+using WorkTest.Repo;
 
 namespace WorkTest.WebAPI.Controllers
 {
@@ -10,19 +12,63 @@ namespace WorkTest.WebAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public readonly ClienteContext _context;
+        public ValuesController(ClienteContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;    
+        }
+        // GET api/values
+        [HttpGet("filtro/{nome}")]
+        public ActionResult GetFiltro(string nome)
+        {
+            var listCliente = _context.Clientes
+                              .Where(c => c.Nome.Contains(nome))
+                              .ToList();
+            //var listCliente = (from cliente in _context.Clientes
+            //                   where cliente.Nome.Contains(nome)
+            //                  select cliente).ToList();
+
+            foreach (var item in listCliente)
+            {
+
+            }
+
+
+            return Ok(listCliente);
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [HttpGet("Atualizar/{nameClient}")]
+        public ActionResult Get(string nameClient)
         {
-            return "value";
+            //var cliente = new Cliente { Nome = nameClient };
+
+            var cliente = _context.Clientes
+                              .Where(c => c.Id == 2)
+                              .FirstOrDefault();
+            cliente.Nome = "Robin";
+            //_context.Clientes.Add(cliente);
+            _context.SaveChanges();
+            
+            return Ok();
         }
+
+        // GET api/values/5
+        [HttpGet("AddRange")]
+        public ActionResult GetAddRange()
+        {
+            _context.AddRange(
+                new Cliente { Nome = "Mikhael" },
+                new Cliente { Nome = "Arthur"  },
+                new Cliente { Nome = "Matheus" },
+                new Cliente { Nome = "Giovana" },
+                new Cliente { Nome = "Yasmin"  }
+            );
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
 
         // POST api/values
         [HttpPost]
@@ -37,9 +83,14 @@ namespace WorkTest.WebAPI.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
+        [HttpGet("Delete/{id}")]
         public void Delete(int id)
         {
+            var cliente = _context.Clientes
+                                  .Where(x => x.Id == id)
+                                  .Single();
+            _context.Clientes.Remove(cliente);
+            _context.SaveChanges();
         }
     }
 }

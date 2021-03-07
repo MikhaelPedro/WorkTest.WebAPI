@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WorkTest.WebAPI.Data;
+using WorkTest.Repo;
 
-namespace WorkTest.WebAPI.Migrations
+namespace WorkTest.Repo.Migrations
 {
     [DbContext(typeof(ClienteContext))]
-    [Migration("20210305041124_initial")]
-    partial class initial
+    [Migration("20210306201420_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace WorkTest.WebAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WorkTest.WebAPI.Models.Cliente", b =>
+            modelBuilder.Entity("WorkTest.Dominio.Cliente", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace WorkTest.WebAPI.Migrations
                     b.ToTable("Clientes");
                 });
 
-            modelBuilder.Entity("WorkTest.WebAPI.Models.Endereco", b =>
+            modelBuilder.Entity("WorkTest.Dominio.Endereco", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,10 +65,10 @@ namespace WorkTest.WebAPI.Migrations
                     b.ToTable("Enderecos");
                 });
 
-            modelBuilder.Entity("WorkTest.WebAPI.Models.Endereco", b =>
+            modelBuilder.Entity("WorkTest.Dominio.Endereco", b =>
                 {
-                    b.HasOne("WorkTest.WebAPI.Models.Cliente", "Cliente")
-                        .WithMany("Endereco")
+                    b.HasOne("WorkTest.Dominio.Cliente", "Cliente")
+                        .WithMany("Enderecos")
                         .HasForeignKey("ClienteId");
                 });
 #pragma warning restore 612, 618

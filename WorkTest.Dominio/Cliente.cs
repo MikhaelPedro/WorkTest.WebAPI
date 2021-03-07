@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WorkTest.WebAPI.Models
+namespace WorkTest.Dominio
 {
     public class Cliente
     {
