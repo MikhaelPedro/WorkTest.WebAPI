@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,16 +23,17 @@ namespace WorkTest.WebAPI.Controllers
         public ActionResult GetFiltro(string nome)
         {
             var listCliente = _context.Clientes
-                              .Where(c => c.Nome.Contains(nome))
-                              .ToList();
+                              .Where(c => EF.Functions.Like(c.Nome, $"%{nome}%"))
+                              .OrderBy(h => h.Id)
+                              .LastOrDefault();
             //var listCliente = (from cliente in _context.Clientes
             //                   where cliente.Nome.Contains(nome)
             //                  select cliente).ToList();
 
-            foreach (var item in listCliente)
-            {
+            //foreach (var item in listCliente)
+            //{
 
-            }
+            //}
 
 
             return Ok(listCliente);
