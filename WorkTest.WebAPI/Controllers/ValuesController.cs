@@ -19,12 +19,12 @@ namespace WorkTest.WebAPI.Controllers
             _context = context;    
         }
         // GET api/values
-        [HttpGet("filtro/{nome}")]
-        public ActionResult GetFiltro(string nome)
+        [HttpGet("filtro/{cpf}")]
+        public ActionResult GetFiltro(string cpf)
         {
             var listCliente = _context.Clientes
-                              .Where(c => EF.Functions.Like(c.Nome, $"%{nome}%"))
-                              .OrderBy(h => h.Id)
+                              .Where(c => EF.Functions.Like(c.CPF, $"%{cpf}%"))
+                              .OrderBy(h => h.CPF)
                               .LastOrDefault();
             //var listCliente = (from cliente in _context.Clientes
             //                   where cliente.Nome.Contains(nome)
@@ -48,7 +48,7 @@ namespace WorkTest.WebAPI.Controllers
             var cliente = _context.Clientes
                               .Where(c => c.Id == 2)
                               .FirstOrDefault();
-            cliente.Nome = "Robin";
+            cliente.Nome = "Mikhael Sclengmann";
             //_context.Clientes.Add(cliente);
             _context.SaveChanges();
             
@@ -60,11 +60,11 @@ namespace WorkTest.WebAPI.Controllers
         public ActionResult GetAddRange()
         {
             _context.AddRange(
-                new Cliente { Nome = "Mikhael" },
-                new Cliente { Nome = "Arthur"  },
-                new Cliente { Nome = "Matheus" },
-                new Cliente { Nome = "Giovana" },
-                new Cliente { Nome = "Yasmin"  }
+                new Cliente { Nome = "Mikhael", CPF = "598.628.018-58", Email = "mikhael@gmail.com", Telefone = "11958462065"},
+                new Cliente { Nome = "Beatriz", CPF = "128.562.548-65", Email = "Beatriz@gmail.com", Telefone = "11985029530"},
+                new Cliente { Nome = "Matheus", CPF = "259.253.826-93", Email = "Matheus@gmail.com", Telefone = "11943128502"},
+                new Cliente { Nome = "Giovana", CPF = "568.516.566-45", Email = "Giovana@gmail.com", Telefone = "11967825430"},
+                new Cliente { Nome = "Yasmin",  CPF = "065.759.635-06", Email =  "Yasmin@gmail.com", Telefone = "11995782567"}
             );
             _context.SaveChanges();
 
