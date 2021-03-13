@@ -14,6 +14,11 @@ namespace WorkTest.Dominio
         public string Email { get; set; }
         public string Telefone { get; set; }
         public List<Endereco> Enderecos { get; set; }
+
+        //public static implicit operator string(Cliente v)
+        //{
+        //    throw new NotImplementedException();
+        //}
         //public ICollection<Endereco> Endereco { get; set; }
 
 

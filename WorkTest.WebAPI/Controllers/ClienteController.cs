@@ -14,19 +14,21 @@ namespace WorkTest.WebAPI.Controllers
     [ApiController]
     public class ClienteController : ControllerBase
     {
-        public readonly ClienteContext _context;
+        private readonly IEFCoreRepository _repo;
 
-        public ClienteController(ClienteContext context)
+        public ClienteController(IEFCoreRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
         // GET: api/Cliente
         [HttpGet]
-        public ActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                return Ok(new Cliente());
+                var clientes = await _repo.GetAllClientes();
+
+                return Ok(clientes);
             }
             catch(Exception ex)
             {
@@ -35,22 +37,34 @@ namespace WorkTest.WebAPI.Controllers
         }
 
         // GET: api/Cliente/5
-        [HttpGet("{id}", Name = "Get")]
-        public ActionResult Get(int id)
+        [HttpGet("{cpf}", Name = "Get")]
+        public async Task<IActionResult> GetCPF(string cpf)
         {
-            return Ok("value");
+            try
+            {
+                var cliente = await _repo.GetClientesbyCPF(cpf);
+
+                return Ok(cliente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro: {ex}");
+            }
         }
 
         // POST: api/Cliente
         [HttpPost]
-        public ActionResult Post(Cliente model)
+        public async Task<IActionResult> Post(Cliente model)
         {
             try
-            {               
-                _context.Clientes.Add(model);
-                _context.SaveChanges();
+            {
+                _repo.Add(model);
 
-                return Ok("Cadastrado");
+                if (await _repo.SaveChangeAsync())
+                {
+                    return Ok("Cadastrado");
+                }
+                return Ok("Não Cadastrado");
             }
             catch (Exception ex)
             {
@@ -60,98 +74,49 @@ namespace WorkTest.WebAPI.Controllers
 
         //PUT: api/Cliente/5
         [HttpPut("{id}")]
-        public ActionResult Put (int id, Cliente model)
+        public async Task<IActionResult> Put(int id, Cliente model)
         {
             try
             {
-                if (_context
-                    .Clientes
-                    .AsNoTracking()
-                    .FirstOrDefault(c => c.Id == id) != null)
+                var cliente = await _repo.GetClientebyId(id);
+                if (cliente != null)
                 {
-                    _context.Clientes.Update(model);
-                    _context.SaveChanges();
-
-                    return Ok("Atualizado");
+                    _repo.Update(model);
+                    if (await _repo.SaveChangeAsync())
+                    { 
+                        return Ok("Alterado");
+                    }
                 }
-                return Ok("Não Encontrado!");
             }
             catch (Exception ex)
             {
                 return BadRequest($"Erro: {ex} ");
             }
-           
+            return BadRequest($"Não Alterado!");
+
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-
-        /*
-
-        //Get : api/Cliente/5
-        [HttpGet("{id}", Name = "Get")]
-        public ActionResult Get (int id)
-
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Cliente/5
-        [HttpPut("{id}")]
-
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // GET: ClienteController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ClienteController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                var cliente = await _repo.GetClientebyId(id);
+                if (cliente != null)
+                {
+                    _repo.Delete(cliente);
+                    if(await _repo.SaveChangeAsync())
 
-        // GET: ClienteController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ClienteController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                    return Ok("Deletado");
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return BadRequest($"Erro: {ex} "); 
             }
+            return BadRequest($"Não deletado!");
         }
-        */
     }
 }
 
